@@ -1,0 +1,46 @@
+sudo apt update
+sudo apt install -y wget curl lsb-release
+
+sudo apt install -y mysql-server
+sudo mysql_secure_installation
+
+sudo mysql -u root -p
+
+CREATE DATABASE semaphore;
+CREATE USER 'semaphore'@'localhost' IDENTIFIED BY 'admin@123';
+GRANT ALL PRIVILEGES ON semaphore.* TO 'semaphore'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+wget https://github.com/ansible-semaphore/semaphore/releases/download/v2.8.75/semaphore_2.8.75_linux_amd64.deb
+
+sudo dpkg -i semaphore_2.8.75_linux_amd64.deb
+
+semaphore setup
+
+sudo nano /etc/systemd/system/semaphore.service
+
+
+[Unit]
+Description=Semaphore Ansible UI
+Documentation=https://github.com/ansible-semaphore/semaphore
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/bin/semaphore server --config /etc/semaphore/config.json
+SyslogIdentifier=semaphore
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+------------------------------------------
+/etc/semaphore/config.json
+/usr/bin/semaphore       
+
+
+sudo systemctl daemon-reload
+sudo systemctl start semaphore
+sudo systemctl enable semaphore
