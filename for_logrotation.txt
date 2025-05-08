@@ -1,0 +1,22 @@
+sudo apt update      # Debian/Ubuntu
+sudo apt install logrotate
+------------------------------------------
+sudo vi /etc/logrotate.d/nginx
+--------------------------------------------------------------------------------------
+/var/log/nginx/*.log {
+    daily
+    missingok
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    copytruncate
+    postrotate
+        /usr/bin/find /var/log/nginx/ -name "*.log.*" -type f -mtime +3 -delete
+    endscript
+}
+---------------------------------------------------
+sudo logrotate -f /etc/logrotate.d/nginx
+
+sudo logrotate -f /etc/logrotate.d/nginx
+----------------------------------------------------
