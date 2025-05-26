@@ -1,0 +1,37 @@
+--------------------------------------------------------------1ST-----------------------------------------------------------------
+if php-fpm service is down the 
+
+go to this path  ---   /etc/php/7.4/fpm/pool.d/www.conf
+and uncomment this    pm.status_path,  ping.path
+ and then got to /etc/nginx/conf.d/file_name.conf      and write this 
+			server {
+    listen 127.0.0.1:80;
+    server_name localhost;
+
+    location ~ ^/(status|ping)$ {
+        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+        allow 127.0.0.1;
+        deny all;
+    }
+}
+
+------------------------------------------------------------------------------------
+add this above file if error generate stub_status error
+location /basic_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+    }
+for testing   curl http://127.0.0.1/basic_status
+---------------------------------------------------------------------------------------
+	kiwi setup 
+	
+	git clone https://github.com/kiwitcms/Kiwi.git
+	cd Kiwi
+	docker-compose up -d
+	docker exec -it kiwi_web /Kiwi/manage.py initial_setup
+	
+------------------------------------------------------------------------------------------

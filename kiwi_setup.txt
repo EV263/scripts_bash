@@ -1,0 +1,7 @@
+kiwi setup 
+	
+	git clone https://github.com/kiwitcms/Kiwi.git
+	cd Kiwi
+	docker-compose up -d
+	docker exec -it kiwi_web /Kiwi/manage.py initial_setup
+	
