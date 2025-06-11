@@ -3,5 +3,12 @@ kiwi setup
 	git clone https://github.com/kiwitcms/Kiwi.git
 	cd Kiwi
 	docker-compose up -d
-	docker exec -it kiwi_web /Kiwi/manage.py initial_setup
+	
+	docker exec -it kiwi_web /Kiwi/manage.py initial_setup  -----  if this is not working then first of this do  
+	
+	docker exec -it kiwi_web /Kiwi/manage.py migrate testplans 0006 --fake
+
+	docker exec -it kiwi_web /Kiwi/manage.py migrate --- and then ----docker exec -it kiwi_web /Kiwi/manage.py initial_setup
+
+	
 	
